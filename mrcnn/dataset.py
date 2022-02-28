@@ -35,7 +35,7 @@ class Building_Dataset(utils.Dataset):
         assert subset in ["train", "val"]
         # The images and coco-like annotations exist already in the data_dir
         image_dir = os.path.join(self.data_dir, subset)
-        coco = COCO(os.path.join(self.data_dir, "annotations", "instances_" + subset + ".json"))
+        coco = COCO(os.path.join(self.data_dir, "annotations", "instances_" + subset + "_bati.json"))
         # Load all classes or a subset?
         if not class_ids:
             # All classes
