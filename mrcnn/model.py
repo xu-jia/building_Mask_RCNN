@@ -2058,34 +2058,40 @@ class MaskRCNN(object):
         some layers from loading.
         exclude: list of layer names to exclude
         """
-        import h5py
-        from tensorflow.python.keras.saving import hdf5_format
+        self.keras_model.load_weights(
+            filepath,
+            by_name=True,
+            skip_mismatch=True,
+        )
 
-        if exclude:
-            by_name = True
-
-        if h5py is None:
-            raise ImportError('`load_weights` requires h5py.')
-        with h5py.File(filepath, mode='r') as f:
-            if 'layer_names' not in f.attrs and 'model_weights' in f:
-                f = f['model_weights']
-
-            # In multi-GPU training, we wrap the model. Get layers
-            # of the inner model because they have the weights.
-            keras_model = self.keras_model
-            layers = keras_model.inner_model.layers if hasattr(keras_model, "inner_model")\
-                else keras_model.layers
-
-            # Exclude some layers
-            if exclude:
-                layers = filter(lambda l: l.name not in exclude, layers)
-
-            if by_name:
-                hdf5_format.load_weights_from_hdf5_group_by_name(f, layers)
-            else:
-                hdf5_format.load_weights_from_hdf5_group(f, layers)
-
-        # Update the log directory
+        # import h5py
+        # from tensorflow.python.keras.saving import hdf5_format
+        #
+        # if exclude:
+        #     by_name = True
+        #
+        # if h5py is None:
+        #     raise ImportError('`load_weights` requires h5py.')
+        # with h5py.File(filepath, mode='r') as f:
+        #     if 'layer_names' not in f.attrs and 'model_weights' in f:
+        #         f = f['model_weights']
+        #
+        #     # In multi-GPU training, we wrap the model. Get layers
+        #     # of the inner model because they have the weights.
+        #     keras_model = self.keras_model
+        #     layers = keras_model.inner_model.layers if hasattr(keras_model, "inner_model")\
+        #         else keras_model.layers
+        #
+        #     # Exclude some layers
+        #     if exclude:
+        #         layers = filter(lambda l: l.name not in exclude, layers)
+        #
+        #     if by_name:
+        #         hdf5_format.load_weights_from_hdf5_group_by_name(f, layers)
+        #     else:
+        #         hdf5_format.load_weights_from_hdf5_group(f, layers)
+        #
+        # # Update the log directory
         self.set_log_dir(filepath)
 
     def get_imagenet_weights(self):
