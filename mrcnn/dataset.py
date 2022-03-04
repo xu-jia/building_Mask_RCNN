@@ -97,8 +97,11 @@ class Building_Dataset(utils.Dataset):
             class_ids = np.array(class_ids, dtype=np.int32)
             return mask, class_ids
         else:
+            mask = np.empty([0, 0, 0])
+            class_ids = np.empty([0], np.int32)
+            return mask, class_ids
             # Call super class to return an empty mask
-            return super(Building_Dataset, self).load_mask(image_id)
+            # return super(Building_Dataset, self).load_mask(image_id)
         # The following two functions are from pycocotools with a few changes.
 
     def image_reference(self, image_id):
