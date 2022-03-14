@@ -22,7 +22,7 @@ from tensorflow.python.eager import context
 import tensorflow.keras.models as KM
 
 from mrcnn import utils
-tf.compat.v1.disable_eager_execution()
+#tf.compat.v1.disable_eager_execution()
 
 ############################################################
 #  Utility Functions
